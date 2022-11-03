@@ -23,6 +23,4 @@ The script requires the PyPDF2 library, which can be found here, and installed u
 - Make sure the number of pages in both files is the same.
 - Move both documents to the same directory as ‘merge.py’.
 - Run the python script
-- A terminal prompt will ask for the name of the merged document.
-- Write the filename for the merged pdf file.
-- The script will combine both pdf’s, alternating the pages and saving the file with the specified name.
+- The script will combine both pdf’s, alternating the pages and save the file as ‘merged.pdf’.
