@@ -1,41 +1,40 @@
-# -*- coding: UTF-8 -*-
 from PyPDF2 import PdfFileReader, PdfFileWriter
 
 
-def merge_odd_even(odd, even, output_file):
-    """
-    Return a merged pdf from two pdfs.
+class MergePDF():
 
-    Parameters:
-        odd:
-            - pdf filename with odd pages in descending order.
-        even:
-            - pdf filename with even pages in descending order.
-    Returns:
-        output_file:
-            - pdf filename with merged pdf.
-    """
-    pdf_output = PdfFileWriter()
-    odd_input = PdfFileReader(open(odd, 'rb'))
-    even_input = PdfFileReader(open(even, 'rb'))
-    odd_pages = odd_input.getNumPages()
-    even_pages = even_input.getNumPages()
-    num_pages = odd_pages * 2
-    if odd_pages == even_pages:
-        print(f'The number of pages is {num_pages}.')
-        for i in range(odd_pages):
-            pdf_output.addPage(odd_input.getPage(i))
-            pdf_output.addPage(even_input.getPage(i))
-        pdf_output.write(open(output_file, 'wb'))
+    def __init__(self):
+        self.odd = 'odd.pdf'
+        self.even = 'even.pdf'
+        self.merged = 'merged.pdf'
+        self.open_files()
+        self.check_pages()
+        if self.check is True:
+            self.merge_files()
+            print('Finished successfully.')
+
+    def open_files(self):
+        self.odd_file = PdfFileReader(open(self.odd, 'rb'))
+        self.even_file = PdfFileReader(open(self.even, 'rb'))
+        self.odd_pages = self.odd_file.getNumPages()
+        self.even_pages = self.even_file.getNumPages()
+
+    def check_pages(self):
+        if self.odd_pages == self.even_pages:
+            self.check = True
+            print("Odd pages are equal to even pages: executing merge.")
+        else:
+            self.check = False
+            print("Odd pages are not equal to even pages: aborting.")
+
+    def merge_files(self):
+        self.merge = PdfFileWriter()
+        for x in range(self.odd_pages):
+            self.merge.addPage(self.odd_file.getPage(x))
+            self.merge.addPage(self.even_file.getPage(x))
+        self.merge.write(open(self.merged, 'wb'))
         print('Documents merged successfully.')
-    else:
-        print('Check page number: Odd pages unequal to even pages')
 
 
 if __name__ == '__main__':
-    odd = 'odd.pdf'
-    even = 'even.pdf'
-    filename = input(
-        'Input the file name for the merged document (without .pdf): ')
-    output_file = filename + '.pdf'
-    merge_odd_even(odd, even, output_file)
+    oMerge = MergePDF()
