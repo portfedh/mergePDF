@@ -1,7 +1,6 @@
-from PyPDF2 import PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfReader, PdfWriter
 
-
-class MergePDF():
+class MergePDF:
 
     def __init__(self):
         self.odd = 'odd.pdf'
@@ -9,15 +8,15 @@ class MergePDF():
         self.merged = 'merged.pdf'
         self.open_files()
         self.check_pages()
-        if self.check is True:
+        if self.check:
             self.merge_files()
             print('Finished successfully.')
 
     def open_files(self):
-        self.odd_file = PdfFileReader(open(self.odd, 'rb'))
-        self.even_file = PdfFileReader(open(self.even, 'rb'))
-        self.odd_pages = self.odd_file.getNumPages()
-        self.even_pages = self.even_file.getNumPages()
+        self.odd_file = PdfReader(self.odd)
+        self.even_file = PdfReader(self.even)
+        self.odd_pages = len(self.odd_file.pages)
+        self.even_pages = len(self.even_file.pages)
 
     def check_pages(self):
         if self.odd_pages == self.even_pages:
@@ -28,13 +27,13 @@ class MergePDF():
             print("Odd pages are not equal to even pages: aborting.")
 
     def merge_files(self):
-        self.merge = PdfFileWriter()
+        self.merge = PdfWriter()
         for x in range(self.odd_pages):
-            self.merge.addPage(self.odd_file.getPage(x))
-            self.merge.addPage(self.even_file.getPage(x))
-        self.merge.write(open(self.merged, 'wb'))
+            self.merge.add_page(self.odd_file.pages[x])
+            self.merge.add_page(self.even_file.pages[x])
+        with open(self.merged, 'wb') as f_out:
+            self.merge.write(f_out)
         print('Documents merged successfully.')
-
 
 if __name__ == '__main__':
     oMerge = MergePDF()
